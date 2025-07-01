@@ -155,6 +155,9 @@ Changelog:
 - July 01, 2025. Added Terms of Service page with navigation
 - July 01, 2025. Enhanced Menu page with scrollable layout for mobile compatibility
 - July 01, 2025. Applied comprehensive red/maroon theme throughout the application
+- July 01, 2025. Successfully migrated from Replit Agent to Replit environment
+- July 01, 2025. Updated Firebase configuration with permanent API keys for ordernaub project
+- July 01, 2025. Fixed Firebase duplicate app initialization issue for stable operation
 ```
 
 ## User Preferences

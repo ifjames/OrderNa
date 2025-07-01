@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { 
   getAuth, 
   GoogleAuthProvider, 
@@ -13,14 +13,15 @@ import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateD
 import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "demo-key",
-  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || "orderna-demo"}.firebaseapp.com`,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "orderna-demo",
-  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || "orderna-demo"}.firebasestorage.app`,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "demo-app-id",
+  apiKey: "AIzaSyDSYNG7pAGLTFhYC6fSsrc3CFxmrf_0dME",
+  authDomain: "ordernaub.firebaseapp.com",
+  projectId: "ordernaub",
+  storageBucket: "ordernaub.firebasestorage.app",
+  messagingSenderId: "348579273140",
+  appId: "1:348579273140:web:63c1fc5f21789cb392fae1"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const functions = getFunctions(app);
