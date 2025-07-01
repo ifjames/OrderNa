@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 animate-fade-in">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
+      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white pt-20 pb-6 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>

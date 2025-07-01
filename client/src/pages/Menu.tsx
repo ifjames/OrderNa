@@ -11,6 +11,7 @@ import { useNotifications } from '@/components/ui/notification';
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCanteen, setSelectedCanteen] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const { addNotification } = useNotifications();
@@ -24,6 +25,14 @@ export default function Menu() {
     { id: 'main', label: 'Main Course' },
     { id: 'snacks', label: 'Snacks' },
     { id: 'drinks', label: 'Drinks' },
+  ];
+
+  const canteens = [
+    { id: 'all', label: 'All Canteens' },
+    { id: 'main-canteen', label: 'Main Canteen', brands: ['Local Kitchen'] },
+    { id: 'chowking', label: 'Chowking', brands: ['Chowking'] },
+    { id: 'kfc', label: 'KFC', brands: ['KFC'] },
+    { id: 'jollibee', label: 'Jollibee', brands: ['Jollibee'] }
   ];
 
   // Sample menu items if Firebase doesn't have data
@@ -78,9 +87,10 @@ export default function Menu() {
   
   const filteredItems = itemsToDisplay?.filter((item: any) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+    const matchesCanteen = selectedCanteen === 'all' || item.canteenId === selectedCanteen;
     const matchesSearch = item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          item.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesCanteen && matchesSearch;
   }) || [];
 
   const addToCart = (menuItem: any) => {
@@ -166,22 +176,50 @@ export default function Menu() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 animate-slide-in-right animate-delay-500">
-            {categories.map((category, index) => (
-              <Button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                variant={selectedCategory === category.id ? 'default' : 'outline'}
-                className={`
-                  hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
-                  ${selectedCategory === category.id
-                    ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
-                    : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
-                }`}
-              >
-                {category.label}
-              </Button>
-            ))}
+          {/* Category Filters */}
+          <div className="mb-4">
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Categories</h3>
+            <div className="flex flex-wrap gap-2 animate-slide-in-right animate-delay-500">
+              {categories.map((category, index) => (
+                <Button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  variant={selectedCategory === category.id ? 'default' : 'outline'}
+                  size="sm"
+                  className={`
+                    hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
+                    ${selectedCategory === category.id
+                      ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
+                      : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  }`}
+                >
+                  {category.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Canteen/Market Filters */}
+          <div className="mb-4">
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Canteens & Brands</h3>
+            <div className="flex flex-wrap gap-2 animate-slide-in-right animate-delay-600">
+              {canteens.map((canteen, index) => (
+                <Button
+                  key={canteen.id}
+                  onClick={() => setSelectedCanteen(canteen.id)}
+                  variant={selectedCanteen === canteen.id ? 'default' : 'outline'}
+                  size="sm"
+                  className={`
+                    hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
+                    ${selectedCanteen === canteen.id
+                      ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
+                      : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  }`}
+                >
+                  {canteen.label}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
 

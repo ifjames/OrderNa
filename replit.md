@@ -158,6 +158,13 @@ Changelog:
 - July 01, 2025. Successfully migrated from Replit Agent to Replit environment
 - July 01, 2025. Updated Firebase configuration with permanent API keys for ordernaub project
 - July 01, 2025. Fixed Firebase duplicate app initialization issue for stable operation
+- July 01, 2025. Redesigned Home page as Grab/FoodPanda-style dashboard with user greeting
+- July 01, 2025. Fixed navbar spacing issues and added cart icon with item count
+- July 01, 2025. Added Profile page with red/maroon theming and proper logo integration
+- July 01, 2025. Implemented canteen/brand selection functionality in Menu page
+- July 01, 2025. Added mobile-responsive scrolling containers for menu items (max 4 visible)
+- July 01, 2025. Fixed logout functionality to redirect to landing page properly
+- July 01, 2025. Applied comprehensive red/maroon theme across all pages for brand consistency
 ```
 
 ## User Preferences

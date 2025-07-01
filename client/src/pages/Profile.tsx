@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { logout } from '@/lib/firebase';
 import { useLocation } from 'wouter';
 import { User, Mail, Phone, IdCard, Shield, LogOut, Edit3 } from 'lucide-react';
+import logoPath from "@assets/ChatGPT_Image_Jul_1__2025__10_17_44_PM-removebg_1751379765787.png";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -30,31 +31,34 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
-          <p className="text-gray-600">Manage your account information</p>
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950 dark:via-gray-900 dark:to-red-950">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white pt-20 pb-8 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl font-bold mb-2">My Profile</h1>
+          <p className="text-red-100">Manage your account information</p>
         </div>
+      </div>
 
+      <div className="max-w-4xl mx-auto p-6 -mt-6 space-y-6">
         {/* Profile Card */}
-        <Card>
+        <Card className="glass-morphism border-red-200 shadow-xl">
           <CardHeader className="text-center pb-4">
-            <div className="w-24 h-24 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="w-12 h-12 text-white" />
+            <div className="w-24 h-24 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden">
+              <img src={logoPath} alt="Profile" className="w-16 h-16 object-contain" />
             </div>
-            <CardTitle className="text-2xl">{user.name}</CardTitle>
-            <Badge variant={user.role === 'admin' ? 'default' : user.role === 'staff' ? 'secondary' : 'outline'} className="mt-2">
+            <CardTitle className="text-2xl text-gray-800">{user.name}</CardTitle>
+            <Badge variant={user.role === 'admin' ? 'default' : user.role === 'staff' ? 'secondary' : 'outline'} 
+                   className={`mt-2 ${user.role === 'admin' ? 'bg-red-600' : user.role === 'staff' ? 'bg-red-500' : 'border-red-300 text-red-700'}`}>
               {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
             </Badge>
           </CardHeader>
         </Card>
 
         {/* Account Information */}
-        <Card>
+        <Card className="glass-morphism border-red-200 shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-red-700">
               <IdCard className="w-5 h-5 mr-2 text-red-600" />
               Account Information
             </CardTitle>

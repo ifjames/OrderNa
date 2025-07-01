@@ -16,6 +16,7 @@ import {
 import { Utensils, Menu, LogOut, User, ShoppingCart, History, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { logout as firebaseLogout } from '@/lib/firebase';
+import logoPath from "@assets/ChatGPT_Image_Jul_1__2025__10_17_44_PM-removebg_1751379765787.png";
 
 export const Navigation = () => {
   const [location, setLocation] = useLocation();
@@ -35,7 +36,7 @@ export const Navigation = () => {
     { href: '/', label: 'Home', icon: Utensils },
     { href: '/menu', label: 'Menu', icon: Menu },
     { href: '/orders', label: 'Orders', icon: ShoppingCart },
-    { href: '/orders', label: 'History', icon: History },
+    { href: '/cart', label: 'Cart', icon: ShoppingCart },
   ];
 
   const staffNavigationItems = [
@@ -84,8 +85,8 @@ export const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-maroon-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <Utensils className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-maroon-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 overflow-hidden">
+              <img src={logoPath} alt="OrderNa Logo" className="w-8 h-8 object-contain" />
             </div>
             <h1 className="text-xl font-poppins font-bold text-white text-shadow group-hover:text-red-100 transition-colors duration-300">OrderNa</h1>
           </Link>
@@ -97,6 +98,16 @@ export const Navigation = () => {
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
+            {/* Cart Icon */}
+            <Link href="/cart">
+              <Button variant="ghost" size="sm" className="relative text-white hover:bg-white/10">
+                <ShoppingCart className="w-5 h-5" />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  0
+                </span>
+              </Button>
+            </Link>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2 text-white hover:bg-white/10">
