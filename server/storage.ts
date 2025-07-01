@@ -15,21 +15,25 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
+    if (!db) throw new Error("Database not available");
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
+    if (!db) throw new Error("Database not available");
     const [user] = await db.select().from(users).where(eq(users.email, email));
     return user || undefined;
   }
 
   async getUserByFirebaseUid(firebaseUid: string): Promise<User | undefined> {
+    if (!db) throw new Error("Database not available");
     const [user] = await db.select().from(users).where(eq(users.firebaseUid, firebaseUid));
     return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    if (!db) throw new Error("Database not available");
     const [user] = await db
       .insert(users)
       .values({
@@ -41,6 +45,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined> {
+    if (!db) throw new Error("Database not available");
     const [user] = await db
       .update(users)
       .set({
@@ -103,4 +108,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MemStorage();
