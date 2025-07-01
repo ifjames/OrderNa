@@ -23,27 +23,86 @@ export default function Menu() {
     { id: 'drinks', label: 'Drinks' },
   ];
 
-  const filteredItems = menuItems?.filter(item => {
+  // Sample menu items if Firebase doesn't have data
+  const sampleItems = [
+    {
+      id: '1',
+      name: 'Classic Burger',
+      description: 'Juicy beef patty with lettuce, tomato, and our secret sauce',
+      price: '₱85',
+      category: 'main',
+      image: null,
+      available: true,
+      canteenId: 'main-canteen',
+      rating: '4.5'
+    },
+    {
+      id: '2',
+      name: 'Chicken Adobo Rice',
+      description: 'Traditional Filipino adobo served with steamed rice',
+      price: '₱75',
+      category: 'main',
+      image: null,
+      available: true,
+      canteenId: 'main-canteen',
+      rating: '4.8'
+    },
+    {
+      id: '3',
+      name: 'Pancit Canton',
+      description: 'Stir-fried noodles with vegetables and choice of meat',
+      price: '₱65',
+      category: 'main',
+      image: null,
+      available: true,
+      canteenId: 'main-canteen',
+      rating: '4.3'
+    },
+    {
+      id: '4',
+      name: 'Fresh Lumpia',
+      description: 'Fresh spring rolls with peanut sauce',
+      price: '₱45',
+      category: 'snacks',
+      image: null,
+      available: true,
+      canteenId: 'main-canteen',
+      rating: '4.6'
+    }
+  ];
+
+  const itemsToDisplay = menuItems && menuItems.length > 0 && menuItems[0].name ? menuItems : sampleItems;
+  
+  const filteredItems = itemsToDisplay?.filter((item: any) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         item.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   }) || [];
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (menuItem: any) => {
+    const cartItem: CartItem = {
+      id: parseInt(menuItem.id) || Date.now(),
+      name: menuItem.name,
+      price: parseFloat(menuItem.price.replace('₱', '')) || 0,
+      quantity: 1,
+      image: menuItem.image,
+      customizations: {}
+    };
+    
     setCart(prevCart => {
-      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+      const existingItem = prevCart.find(item => item.id === cartItem.id);
       if (existingItem) {
-        return prevCart.map(cartItem =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+        return prevCart.map(item =>
+          item.id === cartItem.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
-        return [...prevCart, item];
+        return [...prevCart, cartItem];
       }
     });
-    addNotification(`${item.name} added to cart!`, 'success');
+    addNotification(`${menuItem.name} added to cart!`, 'success');
   };
 
   const getTotalItems = () => {

@@ -7,6 +7,8 @@ import { Navigation } from "@/components/Navigation";
 import { NotificationContainer, useNotifications } from "@/components/ui/notification";
 import { useAuth } from "@/hooks/useAuth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { initializeSampleData } from "@/lib/firebase";
+import { useEffect } from "react";
 
 // Pages
 import Landing from "@/pages/Landing";
@@ -23,6 +25,13 @@ import NotFound from "@/pages/not-found";
 function AppContent() {
   const { user, loading } = useAuth();
   const { notifications } = useNotifications();
+  
+  useEffect(() => {
+    // Initialize sample data when app starts
+    if (user) {
+      initializeSampleData().catch(console.error);
+    }
+  }, [user]);
 
   if (loading) {
     return (
@@ -37,15 +46,14 @@ function AppContent() {
       <NotificationContainer notifications={notifications} />
       
       <Switch>
-        {/* Public routes */}
-        <Route path="/" component={user ? (user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home) : Landing} />
-        <Route path="/login" component={Login} />
-        <Route path="/terms" component={TermsOfService} />
-        
-        {/* Protected routes - only show if user is logged in */}
-        {user && (
+        {user ? (
+          // Authenticated user routes
           <>
             <Navigation />
+            {/* Root redirect based on role */}
+            <Route path="/" component={user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home} />
+            
+            {/* Common authenticated routes */}
             <Route path="/home" component={Home} />
             <Route path="/menu" component={Menu} />
             <Route path="/cart" component={Cart} />
@@ -61,11 +69,21 @@ function AppContent() {
             {user.role === 'admin' && (
               <Route path="/admin" component={AdminDashboard} />
             )}
+            
+            {/* Fallback to 404 for authenticated users */}
+            <Route component={NotFound} />
+          </>
+        ) : (
+          // Public routes for non-authenticated users
+          <>
+            <Route path="/" component={Landing} />
+            <Route path="/login" component={Login} />
+            <Route path="/terms" component={TermsOfService} />
+            
+            {/* Fallback to 404 for public users */}
+            <Route component={NotFound} />
           </>
         )}
-        
-        {/* Fallback to 404 */}
-        <Route component={NotFound} />
       </Switch>
     </>
   );

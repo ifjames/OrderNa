@@ -34,9 +34,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen animate-fade-in">
       {/* Hero Section */}
-      <section className="gradient-bg text-white py-20 px-4">
+      <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 dark:from-red-900 dark:via-red-800 dark:to-red-900 text-white py-20 px-4 animate-slide-down">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-poppins font-bold mb-6">
             Skip the Line,<br />
