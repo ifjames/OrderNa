@@ -75,14 +75,14 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950 dark:via-gray-900 dark:to-red-950">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950 dark:via-gray-900 dark:to-red-950 animate-fade-in">
       {/* Header */}
-      <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 dark:from-red-900 dark:via-red-800 dark:to-red-900 text-white py-12 px-4">
+      <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 dark:from-red-900 dark:via-red-800 dark:to-red-900 text-white py-12 px-4 animate-slide-down">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-slide-up animate-delay-200">
             University of Batangas Menu
           </h1>
-          <p className="text-xl text-red-100 dark:text-red-200">
+          <p className="text-xl text-red-100 dark:text-red-200 animate-fade-in animate-delay-400">
             Fresh meals from our campus canteens
           </p>
         </div>
@@ -90,31 +90,32 @@ export default function Menu() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Search and Filters */}
-        <div className="mb-8">
+        <div className="mb-8 animate-slide-up animate-delay-300">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 dark:text-red-300 w-5 h-5" />
+            <div className="relative flex-1 animate-slide-in-left animate-delay-400">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 dark:text-red-300 w-5 h-5 animate-bounce-subtle" />
               <Input
                 type="text"
                 placeholder="Search menu items..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm"
+                className="pl-10 border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm hover-lift transition-all duration-300"
               />
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            {categories.map(category => (
+          <div className="flex flex-wrap gap-3 animate-slide-in-right animate-delay-500">
+            {categories.map((category, index) => (
               <Button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
                 variant={selectedCategory === category.id ? 'default' : 'outline'}
-                className={
-                  selectedCategory === category.id
-                    ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600'
+                className={`
+                  hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
+                  ${selectedCategory === category.id
+                    ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
                     : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
-                }
+                }`}
               >
                 {category.label}
               </Button>

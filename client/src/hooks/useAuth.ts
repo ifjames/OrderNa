@@ -36,6 +36,8 @@ export const useAuth = () => {
               email: firebaseUser.email!,
               name: firebaseUser.displayName || firebaseUser.email!.split('@')[0],
               role: 'student' as const,
+              studentId: '', // Will need to be filled later by user
+              phoneNumber: '', // Will need to be filled later by user
             };
 
             const createResponse = await fetch('/api/users', {

@@ -149,29 +149,29 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex animate-fade-in">
       {/* Left Side - Image/Brand Section */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden animate-slide-in-left">
         {/* Background with overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-red-600 via-red-700 to-red-800">
           <div className="absolute inset-0 bg-black/20"></div>
         </div>
         
         {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/30 rounded-full -translate-y-32 translate-x-32"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-400/20 rounded-full translate-y-48 -translate-x-48"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/30 rounded-full -translate-y-32 translate-x-32 animate-float animate-delay-200"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-400/20 rounded-full translate-y-48 -translate-x-48 animate-float animate-delay-400"></div>
         
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
-          <div className="text-center mb-8">
-            <img src={logoPath} alt="OrderNa Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-lg" />
-            <h1 className="text-4xl font-bold mb-4">Welcome to OrderNa</h1>
-            <p className="text-xl text-red-100 leading-relaxed max-w-md">
+          <div className="text-center mb-8 animate-slide-up animate-delay-300">
+            <img src={logoPath} alt="OrderNa Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-lg animate-scale-in animate-delay-200" />
+            <h1 className="text-4xl font-bold mb-4 animate-fade-in animate-delay-400">Welcome to OrderNa</h1>
+            <p className="text-xl text-red-100 leading-relaxed max-w-md animate-fade-in animate-delay-500">
               University of Batangas Food Ordering System
             </p>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center max-w-sm">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center max-w-sm hover-lift animate-scale-in animate-delay-500">
             <h3 className="text-lg font-semibold mb-2">Pre-order your meals</h3>
             <p className="text-red-100 text-sm">
               Skip the lines and enjoy fresh campus meals with our convenient ordering system
@@ -181,8 +181,8 @@ export default function Login() {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900">
-        <div className="w-full max-w-md">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900 animate-slide-in-right">
+        <div className="w-full max-w-md animate-slide-up animate-delay-200">
           {/* Return to Landing Button */}
           <Button
             variant="ghost"
@@ -193,17 +193,17 @@ export default function Login() {
             Return to Home
           </Button>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-xl border-0">
+          <Card className="bg-white dark:bg-gray-800 shadow-xl border-0 hover-lift animate-scale-in animate-delay-300">
             <CardHeader className="text-center space-y-4 pb-6">
               {/* Mobile Logo */}
-              <div className="lg:hidden flex justify-center">
+              <div className="lg:hidden flex justify-center animate-scale-in animate-delay-100">
                 <img src={logoPath} alt="OrderNa Logo" className="w-16 h-16" />
               </div>
               
-              <CardTitle className="text-2xl font-bold text-red-800 dark:text-red-200">
+              <CardTitle className="text-2xl font-bold text-red-800 dark:text-red-200 animate-fade-in animate-delay-400">
                 {isLogin ? 'Welcome Back!' : 'Create Account'}
               </CardTitle>
-              <CardDescription className="text-red-600 dark:text-red-400">
+              <CardDescription className="text-red-600 dark:text-red-400 animate-fade-in animate-delay-500">
                 {isLogin 
                   ? 'To keep connected with us, please login using your email and password.' 
                   : 'Create your University of Batangas student account'
@@ -211,7 +211,7 @@ export default function Login() {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 animate-slide-up animate-delay-400">
               <form onSubmit={isLogin ? handleEmailSignIn : handleEmailSignUp} className="space-y-4">
                 {/* Email Field */}
                 <div className="space-y-2">
@@ -352,10 +352,15 @@ export default function Login() {
                 {/* Submit Button */}
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl hover-lift hover-glow transition-all duration-300 animate-bounce-subtle"
                   disabled={loading}
                 >
-                  {loading ? (isLogin ? 'SIGNING IN...' : 'CREATING ACCOUNT...') : (isLogin ? 'LOGIN' : 'CREATE ACCOUNT')}
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <div className="loading-pulse w-5 h-5 bg-white rounded-full mr-2"></div>
+                      {isLogin ? 'SIGNING IN...' : 'CREATING ACCOUNT...'}
+                    </span>
+                  ) : (isLogin ? 'LOGIN' : 'CREATE ACCOUNT')}
                 </Button>
               </form>
 
@@ -375,23 +380,23 @@ export default function Login() {
               <Button 
                 type="button"
                 variant="outline" 
-                className="w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 h-12 font-medium"
+                className="w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 h-12 font-medium hover-lift transition-all duration-300"
                 onClick={handleGoogleSignIn}
                 disabled={loading}
               >
-                <Chrome className="w-5 h-5 mr-3" />
+                <Chrome className="w-5 h-5 mr-3 animate-bounce-subtle" />
                 Sign in with Google
               </Button>
 
               {/* Toggle Login/Register */}
-              <div className="text-center">
+              <div className="text-center animate-fade-in animate-delay-500">
                 <span className="text-gray-600 dark:text-gray-400">
                   {isLogin ? "Don't have an account? " : "Already have an account? "}
                 </span>
                 <Button
                   type="button"
                   variant="link"
-                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 p-0 h-auto font-semibold"
+                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 p-0 h-auto font-semibold hover-scale transition-all duration-200"
                   onClick={() => setIsLogin(!isLogin)}
                 >
                   {isLogin ? "Sign up" : "Sign in"}
