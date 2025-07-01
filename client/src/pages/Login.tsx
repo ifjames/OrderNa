@@ -1,90 +1,310 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Utensils } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { signInWithGoogle, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@/lib/firebase';
+import { Chrome, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import logoPath from "@assets/ChatGPT_Image_Jul_1__2025__10_17_44_PM-removebg_1751379765787.png";
 
 export default function Login() {
-  const [, navigate] = useLocation();
-  const { user, loading, login, error } = useAuth();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
+    studentId: '',
+    role: 'student' as 'student' | 'staff' | 'admin'
+  });
 
-  useEffect(() => {
-    if (user && !loading) {
-      navigate('/');
+  if (user) {
+    // Redirect based on role
+    if (user.role === 'admin') {
+      setLocation('/admin');
+    } else if (user.role === 'staff') {
+      setLocation('/staff');
+    } else {
+      setLocation('/home');
     }
-  }, [user, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen gradient-bg flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
-  return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
-      </div>
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      await signInWithGoogle();
+      toast({
+        title: "Success",
+        description: "Signed in successfully!"
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to sign in with Google",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
       
-      <Card className="w-full max-w-lg glass-morphism border-white/30 shadow-2xl relative z-10">
-        <CardHeader className="text-center space-y-6 pt-8">
-          <div className="flex justify-center">
-            <div className="w-20 h-20 bg-white/95 rounded-3xl flex items-center justify-center shadow-2xl backdrop-blur-sm border border-white/20 floating-action">
-              <Utensils className="w-10 h-10 text-primary" />
-            </div>
-          </div>
-          <div>
-            <CardTitle className="text-3xl font-poppins font-bold text-white mb-3 text-shadow-lg">
-              Welcome to OrderNa
-            </CardTitle>
-            <p className="text-red-100 text-lg font-medium">
-              Skip the Line, Not the Meal
+      if (isLogin) {
+        await signInWithEmailAndPassword(formData.email, formData.password);
+        toast({
+          title: "Success",
+          description: "Signed in successfully!"
+        });
+      } else {
+        await createUserWithEmailAndPassword({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          role: formData.role,
+          studentId: formData.studentId || undefined
+        });
+        toast({
+          title: "Success",
+          description: "Account created successfully!"
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Authentication failed",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-white to-orange-200 dark:from-orange-950 dark:via-gray-900 dark:to-orange-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background decorations inspired by the reference image */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-400/30 to-yellow-400/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-full blur-2xl"></div>
+      </div>
+
+      <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 relative z-10">
+        {/* Left side - Branding */}
+        <div className="hidden lg:flex flex-col justify-center items-center text-center p-8">
+          <div className="mb-8">
+            <img src={logoPath} alt="OrderNa Logo" className="h-32 w-32 mx-auto mb-6 animate-pulse" />
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+              OrderNa
+            </h1>
+            <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-md">
+              Welcome Back! To keep connected with us, please login using your email and password.
             </p>
-          </div>
-        </CardHeader>
-        
-        <CardContent className="space-y-8 px-8 pb-8">
-          <div className="text-center">
-            <p className="text-red-100 text-sm mb-8 leading-relaxed">
-              Sign in with your Google account to start ordering from University of Batangas canteens
-            </p>
-            
-            <Button 
-              onClick={login}
-              className="w-full bg-white/95 text-gray-900 hover:bg-white font-semibold py-4 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20 group"
-              disabled={loading}
-            >
-              <svg className="w-6 h-6 mr-3 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-              </svg>
-              Sign in with Google
-            </Button>
-            
-            {error && (
-              <div className="mt-6 p-4 glass-morphism-light border border-red-300/30 rounded-xl">
-                <p className="text-red-200 text-sm font-medium">
-                  {error}
-                </p>
-              </div>
-            )}
           </div>
           
-          <div className="text-center border-t border-white/20 pt-6">
-            <p className="text-red-200 text-xs leading-relaxed">
-              By signing in, you agree to our Terms of Service and Privacy Policy
-            </p>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            University of Batangas Food Ordering System
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Right side - Login Form */}
+        <div className="flex items-center justify-center">
+          <Card className="w-full max-w-md bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-orange-200 dark:border-orange-800 shadow-2xl">
+            <CardHeader className="text-center space-y-2">
+              <div className="lg:hidden mb-4">
+                <img src={logoPath} alt="OrderNa Logo" className="h-16 w-16 mx-auto mb-3" />
+              </div>
+              <CardTitle className="text-3xl font-bold text-gray-900 dark:text-white">
+                {isLogin ? 'Welcome Back!' : 'Join OrderNa'}
+              </CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-300">
+                {isLogin 
+                  ? 'To keep connected with us, please login using your email and password.' 
+                  : 'Create your account to get started with OrderNa'
+                }
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {!isLogin && (
+                  <>
+                    <div>
+                      <Label htmlFor="name" className="text-gray-700 dark:text-gray-200 font-medium">Full Name</Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                        className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                        placeholder="Enter your full name"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="role" className="text-gray-700 dark:text-gray-200 font-medium">Role</Label>
+                      <Select value={formData.role} onValueChange={(value) => setFormData(prev => ({ ...prev, role: value as any }))}>
+                        <SelectTrigger className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800">
+                          <SelectValue placeholder="Select your role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="student">Student</SelectItem>
+                          <SelectItem value="staff">Staff (Canteen)</SelectItem>
+                          <SelectItem value="admin">Administrator</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {formData.role === 'student' && (
+                      <div>
+                        <Label htmlFor="studentId" className="text-gray-700 dark:text-gray-200 font-medium">Student ID (Optional)</Label>
+                        <Input
+                          id="studentId"
+                          type="text"
+                          value={formData.studentId}
+                          onChange={(e) => setFormData(prev => ({ ...prev, studentId: e.target.value }))}
+                          className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                          placeholder="Enter your student ID"
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+                
+                <div>
+                  <Label htmlFor="email" className="text-gray-700 dark:text-gray-200 font-medium">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="password" className="text-gray-700 dark:text-gray-200 font-medium">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                      className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white pr-10"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {!isLogin && (
+                  <div>
+                    <Label htmlFor="confirmPassword" className="text-gray-700 dark:text-gray-200 font-medium">Confirm Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                      className="border-gray-300 focus:border-orange-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
+                )}
+
+                {isLogin && (
+                  <div className="text-right">
+                    <Button variant="link" className="text-orange-600 hover:text-orange-700 dark:text-orange-400 p-0 h-auto font-normal text-sm">
+                      Forgot Password?
+                    </Button>
+                  </div>
+                )}
+
+                <Button 
+                  type="submit" 
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
+                >
+                  {loading ? 'Please wait...' : (isLogin ? 'LOGIN' : 'CREATE ACCOUNT')}
+                </Button>
+              </form>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <Separator className="w-full border-gray-300 dark:border-gray-600" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white dark:bg-gray-900 px-2 text-gray-500">Or continue with</span>
+                </div>
+              </div>
+
+              <Button 
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                variant="outline" 
+                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
+              >
+                <Chrome className="mr-2 h-4 w-4" />
+                Sign in with Google
+              </Button>
+
+              <div className="text-center">
+                <span className="text-gray-600 dark:text-gray-400 text-sm">
+                  {isLogin ? "Don't have an account?" : "Already have an account?"}
+                </span>
+                {" "}
+                <Button
+                  variant="link"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-orange-600 hover:text-orange-700 dark:text-orange-400 p-0 h-auto font-semibold text-sm"
+                >
+                  {isLogin ? "Sign up" : "Sign in"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

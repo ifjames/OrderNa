@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 // Pages
+import Landing from "@/pages/Landing";
 import Home from "@/pages/Home";
 import Menu from "@/pages/Menu";
 import Cart from "@/pages/Cart";
@@ -30,30 +31,35 @@ function AppContent() {
     );
   }
 
-  if (!user) {
-    return <Login />;
-  }
-
   return (
     <>
-      <Navigation />
       <NotificationContainer notifications={notifications} />
       
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/menu" component={Menu} />
-        <Route path="/cart" component={Cart} />
-        <Route path="/orders" component={Orders} />
-        <Route path="/orders/:id" component={Orders} />
+        {/* Public routes */}
+        <Route path="/" component={user ? (user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home) : Landing} />
+        <Route path="/login" component={Login} />
         
-        {/* Staff routes */}
-        {(user.role === 'staff' || user.role === 'admin') && (
-          <Route path="/staff" component={StaffDashboard} />
-        )}
-        
-        {/* Admin routes */}
-        {user.role === 'admin' && (
-          <Route path="/admin" component={AdminDashboard} />
+        {/* Protected routes - only show if user is logged in */}
+        {user && (
+          <>
+            <Navigation />
+            <Route path="/home" component={Home} />
+            <Route path="/menu" component={Menu} />
+            <Route path="/cart" component={Cart} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/orders/:id" component={Orders} />
+            
+            {/* Staff routes */}
+            {(user.role === 'staff' || user.role === 'admin') && (
+              <Route path="/staff" component={StaffDashboard} />
+            )}
+            
+            {/* Admin routes */}
+            {user.role === 'admin' && (
+              <Route path="/admin" component={AdminDashboard} />
+            )}
+          </>
         )}
         
         {/* Fallback to 404 */}

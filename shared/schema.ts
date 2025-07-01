@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   role: text("role").notNull().default("student"), // student, staff, admin
   studentId: text("student_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const menuItems = pgTable("menu_items", {

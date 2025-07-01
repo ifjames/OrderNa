@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
-import { onAuthStateChange, signInWithGoogle, logout, createUser, getUser } from '@/lib/firebase';
+import { onAuthStateChange, logout } from '@/lib/firebase';
 
 export interface AuthUser {
-  id: string;
+  id: number;
   firebaseUid: string;
   email: string;
   name: string;
   role: 'student' | 'staff' | 'admin';
   studentId?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const useAuth = () => {
@@ -20,19 +22,39 @@ export const useAuth = () => {
     const unsubscribe = onAuthStateChange(async (firebaseUser: User | null) => {
       if (firebaseUser) {
         try {
-          let userData = await getUser(firebaseUser.uid);
+          // Fetch user from our PostgreSQL backend
+          const response = await fetch(`/api/user/${firebaseUser.uid}`);
           
-          if (!userData) {
-            // Create new user in Firestore
-            userData = await createUser({
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else if (response.status === 404) {
+            // User doesn't exist in our database yet
+            // This happens when they sign in with Google for the first time
+            const newUserData = {
               firebaseUid: firebaseUser.uid,
               email: firebaseUser.email!,
               name: firebaseUser.displayName || firebaseUser.email!.split('@')[0],
-              role: 'student',
+              role: 'student' as const,
+            };
+
+            const createResponse = await fetch('/api/users', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newUserData),
             });
+
+            if (createResponse.ok) {
+              const createdUser = await createResponse.json();
+              setUser(createdUser);
+            } else {
+              throw new Error('Failed to create user');
+            }
+          } else {
+            throw new Error('Failed to fetch user data');
           }
-          
-          setUser(userData as AuthUser);
         } catch (err) {
           console.error('Error fetching user data:', err);
           setError('Failed to load user data');
@@ -45,16 +67,6 @@ export const useAuth = () => {
 
     return unsubscribe;
   }, []);
-
-  const login = async () => {
-    try {
-      setError(null);
-      await signInWithGoogle();
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('Failed to login');
-    }
-  };
 
   const handleLogout = async () => {
     try {
@@ -70,7 +82,6 @@ export const useAuth = () => {
     user,
     loading,
     error,
-    login,
     logout: handleLogout,
     isAuthenticated: !!user,
   };

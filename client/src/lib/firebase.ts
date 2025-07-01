@@ -1,5 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut, onAuthStateChanged, User } from "firebase/auth";
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  signInWithRedirect, 
+  signOut, 
+  onAuthStateChanged, 
+  User,
+  createUserWithEmailAndPassword as firebaseCreateUser,
+  signInWithEmailAndPassword as firebaseSignIn
+} from "firebase/auth";
 import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
 
@@ -28,6 +37,36 @@ export const logout = () => {
 
 export const onAuthStateChange = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, callback);
+};
+
+// Email/Password Authentication
+export const createUserWithEmailAndPassword = async (userData: {
+  email: string;
+  password: string;
+  name: string;
+  role: 'student' | 'staff' | 'admin';
+  studentId?: string;
+}) => {
+  const userCredential = await firebaseCreateUser(auth, userData.email, userData.password);
+  const user = userCredential.user;
+  
+  // Create user document in Firestore
+  await setDoc(doc(db, 'users', user.uid), {
+    firebaseUid: user.uid,
+    email: userData.email,
+    name: userData.name,
+    role: userData.role,
+    studentId: userData.studentId || null,
+    isActive: true,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+  });
+  
+  return userCredential;
+};
+
+export const signInWithEmailAndPassword = async (email: string, password: string) => {
+  return firebaseSignIn(auth, email, password);
 };
 
 // Firestore helpers
