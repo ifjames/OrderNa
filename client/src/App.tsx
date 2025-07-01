@@ -17,6 +17,7 @@ import Orders from "@/pages/Orders";
 import StaffDashboard from "@/pages/StaffDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import Login from "@/pages/Login";
+import TermsOfService from "@/pages/TermsOfService";
 import NotFound from "@/pages/not-found";
 
 function AppContent() {
@@ -39,6 +40,7 @@ function AppContent() {
         {/* Public routes */}
         <Route path="/" component={user ? (user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home) : Landing} />
         <Route path="/login" component={Login} />
+        <Route path="/terms" component={TermsOfService} />
         
         {/* Protected routes - only show if user is logged in */}
         {user && (

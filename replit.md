@@ -148,6 +148,13 @@ Changelog:
 - July 01, 2025. Updated all components with modern design elements
 - July 01, 2025. Added enhanced animations and transitions
 - July 01, 2025. Implemented gradient backgrounds and floating actions
+- July 01, 2025. Migrated from Replit Agent to Replit environment
+- July 01, 2025. Integrated Firebase Firestore database replacing PostgreSQL
+- July 01, 2025. Updated authentication system with required phone numbers and student IDs
+- July 01, 2025. Removed role selection from registration (defaults to student)
+- July 01, 2025. Added Terms of Service page with navigation
+- July 01, 2025. Enhanced Menu page with scrollable layout for mobile compatibility
+- July 01, 2025. Applied comprehensive red/maroon theme throughout the application
 ```
 
 ## User Preferences

@@ -8,7 +8,8 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
   role: text("role").notNull().default("student"), // student, staff, admin
-  studentId: text("student_id"),
+  studentId: text("student_id").notNull(), // Made required
+  phoneNumber: text("phone_number").notNull(), // Added phone number as required
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -62,6 +63,7 @@ export const canteens = pgTable("canteens", {
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
+  updatedAt: true,
 });
 
 export const insertMenuItemSchema = createInsertSchema(menuItems).omit({

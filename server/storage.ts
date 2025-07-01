@@ -89,7 +89,8 @@ export class MemStorage implements IStorage {
       ...insertUser, 
       id,
       role: insertUser.role || 'student',
-      studentId: insertUser.studentId || null,
+      studentId: insertUser.studentId,
+      phoneNumber: insertUser.phoneNumber,
       createdAt: new Date(),
       updatedAt: new Date()
     };

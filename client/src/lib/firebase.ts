@@ -44,8 +44,9 @@ export const createUserWithEmailAndPassword = async (userData: {
   email: string;
   password: string;
   name: string;
-  role: 'student' | 'staff' | 'admin';
-  studentId?: string;
+  studentId: string;
+  phoneNumber: string;
+  role?: 'student' | 'staff' | 'admin';
 }) => {
   const userCredential = await firebaseCreateUser(auth, userData.email, userData.password);
   const user = userCredential.user;
@@ -55,8 +56,9 @@ export const createUserWithEmailAndPassword = async (userData: {
     firebaseUid: user.uid,
     email: userData.email,
     name: userData.name,
-    role: userData.role,
-    studentId: userData.studentId || null,
+    role: userData.role || 'student',
+    studentId: userData.studentId,
+    phoneNumber: userData.phoneNumber,
     isActive: true,
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
