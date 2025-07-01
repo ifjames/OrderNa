@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { signInWithGoogle, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@/lib/firebase';
-import { Chrome, Eye, EyeOff, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Chrome, Eye, EyeOff, ArrowLeft, ExternalLink, Home } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import logoPath from "@assets/ChatGPT_Image_Jul_1__2025__10_17_44_PM-removebg_1751379765787.png";
 
@@ -149,33 +149,63 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950 dark:via-gray-900 dark:to-red-950">
-      <div className="container mx-auto px-4 py-8">
-        {/* Logo Return Button */}
-        {!isLogin && (
+    <div className="min-h-screen flex">
+      {/* Left Side - Image/Brand Section */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+        {/* Background with overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-red-600 via-red-700 to-red-800">
+          <div className="absolute inset-0 bg-black/20"></div>
+        </div>
+        
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/30 rounded-full -translate-y-32 translate-x-32"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-400/20 rounded-full translate-y-48 -translate-x-48"></div>
+        
+        {/* Content */}
+        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
+          <div className="text-center mb-8">
+            <img src={logoPath} alt="OrderNa Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-lg" />
+            <h1 className="text-4xl font-bold mb-4">Welcome to OrderNa</h1>
+            <p className="text-xl text-red-100 leading-relaxed max-w-md">
+              University of Batangas Food Ordering System
+            </p>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center max-w-sm">
+            <h3 className="text-lg font-semibold mb-2">Pre-order your meals</h3>
+            <p className="text-red-100 text-sm">
+              Skip the lines and enjoy fresh campus meals with our convenient ordering system
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Form Section */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900">
+        <div className="w-full max-w-md">
+          {/* Return to Landing Button */}
           <Button
             variant="ghost"
-            onClick={() => setIsLogin(true)}
+            onClick={() => setLocation('/')}
             className="mb-6 text-red-700 hover:text-red-800 hover:bg-red-50 dark:text-red-300 dark:hover:text-red-200 dark:hover:bg-red-900/20"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            <img src={logoPath} alt="OrderNa" className="w-6 h-6 mr-2" />
-            Back to Login
+            <Home className="w-4 h-4 mr-2" />
+            Return to Home
           </Button>
-        )}
 
-        <div className="flex items-center justify-center">
-          <Card className="w-full max-w-md bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm border border-red-200/50 dark:border-red-800/50 shadow-xl">
-            <CardHeader className="text-center space-y-4">
-              <div className="flex justify-center">
-                <img src={logoPath} alt="OrderNa Logo" className="w-20 h-20" />
+          <Card className="bg-white dark:bg-gray-800 shadow-xl border-0">
+            <CardHeader className="text-center space-y-4 pb-6">
+              {/* Mobile Logo */}
+              <div className="lg:hidden flex justify-center">
+                <img src={logoPath} alt="OrderNa Logo" className="w-16 h-16" />
               </div>
+              
               <CardTitle className="text-2xl font-bold text-red-800 dark:text-red-200">
-                {isLogin ? 'Welcome Back' : 'Join OrderNa'}
+                {isLogin ? 'Welcome Back!' : 'Create Account'}
               </CardTitle>
               <CardDescription className="text-red-600 dark:text-red-400">
                 {isLogin 
-                  ? 'Sign in to your University of Batangas student account' 
+                  ? 'To keep connected with us, please login using your email and password.' 
                   : 'Create your University of Batangas student account'
                 }
               </CardDescription>
@@ -185,21 +215,21 @@ export default function Login() {
               <form onSubmit={isLogin ? handleEmailSignIn : handleEmailSignUp} className="space-y-4">
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-red-800 dark:text-red-200">Email Address *</Label>
+                  <Label htmlFor="email" className="text-red-800 dark:text-red-200 font-medium">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400"
+                    className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12"
                     required
                   />
                 </div>
 
                 {/* Password Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-red-800 dark:text-red-200">Password *</Label>
+                  <Label htmlFor="password" className="text-red-800 dark:text-red-200 font-medium">Password</Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -207,7 +237,7 @@ export default function Login() {
                       placeholder="Enter your password"
                       value={formData.password}
                       onChange={(e) => handleInputChange('password', e.target.value)}
-                      className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400 pr-10"
+                      className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12 pr-12"
                       required
                     />
                     <Button
@@ -218,12 +248,19 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        <EyeOff className="h-4 w-4 text-gray-500" />
                       ) : (
-                        <Eye className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        <Eye className="h-4 w-4 text-gray-500" />
                       )}
                     </Button>
                   </div>
+                  {isLogin && (
+                    <div className="text-right">
+                      <Button variant="link" className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 text-sm p-0 h-auto">
+                        Forgot Password?
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Registration Fields */}
@@ -231,85 +268,83 @@ export default function Login() {
                   <>
                     {/* Confirm Password */}
                     <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="text-red-800 dark:text-red-200">Confirm Password *</Label>
+                      <Label htmlFor="confirmPassword" className="text-red-800 dark:text-red-200 font-medium">Confirm Password</Label>
                       <Input
                         id="confirmPassword"
                         type="password"
                         placeholder="Confirm your password"
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                        className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400"
+                        className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12"
                         required
                       />
                     </div>
 
                     {/* Full Name */}
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-red-800 dark:text-red-200">Full Name *</Label>
+                      <Label htmlFor="name" className="text-red-800 dark:text-red-200 font-medium">Full Name</Label>
                       <Input
                         id="name"
                         type="text"
                         placeholder="Enter your full name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400"
+                        className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12"
                         required
                       />
                     </div>
 
-                    {/* Student ID - Required */}
+                    {/* Student ID */}
                     <div className="space-y-2">
-                      <Label htmlFor="studentId" className="text-red-800 dark:text-red-200">Student ID *</Label>
+                      <Label htmlFor="studentId" className="text-red-800 dark:text-red-200 font-medium">Student ID</Label>
                       <Input
                         id="studentId"
                         type="text"
                         placeholder="Enter your student ID"
                         value={formData.studentId}
                         onChange={(e) => handleInputChange('studentId', e.target.value)}
-                        className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400"
+                        className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12"
                         required
                       />
                     </div>
 
-                    {/* Phone Number - Required */}
+                    {/* Phone Number */}
                     <div className="space-y-2">
-                      <Label htmlFor="phoneNumber" className="text-red-800 dark:text-red-200">Phone Number *</Label>
+                      <Label htmlFor="phoneNumber" className="text-red-800 dark:text-red-200 font-medium">Phone Number</Label>
                       <Input
                         id="phoneNumber"
                         type="tel"
                         placeholder="Enter your phone number"
                         value={formData.phoneNumber}
                         onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                        className="border-red-200 focus:border-red-500 focus:ring-red-500 dark:border-red-700 dark:focus:border-red-400"
+                        className="border-gray-300 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:focus:border-red-400 h-12"
                         required
                       />
                     </div>
 
-                    {/* Terms of Service Checkbox */}
-                    <div className="flex items-start space-x-2">
+                    {/* Terms of Service */}
+                    <div className="flex items-start space-x-3">
                       <Checkbox
                         id="acceptTerms"
                         checked={formData.acceptTerms}
                         onCheckedChange={(checked) => handleInputChange('acceptTerms', checked)}
-                        className="border-red-200 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 dark:border-red-700 dark:data-[state=checked]:bg-red-500 dark:data-[state=checked]:border-red-500"
+                        className="border-red-200 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 dark:border-red-700 dark:data-[state=checked]:bg-red-500 dark:data-[state=checked]:border-red-500 mt-1"
                       />
-                      <div className="grid gap-1.5 leading-none">
-                        <Label 
-                          htmlFor="acceptTerms" 
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-red-800 dark:text-red-200"
+                      <Label 
+                        htmlFor="acceptTerms" 
+                        className="text-sm leading-relaxed text-red-800 dark:text-red-200"
+                      >
+                        I accept the{' '}
+                        <Button
+                          type="button"
+                          variant="link"
+                          className="h-auto p-0 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 underline text-sm"
+                          onClick={() => setLocation('/terms')}
                         >
-                          I accept the{' '}
-                          <Button
-                            type="button"
-                            variant="link"
-                            className="h-auto p-0 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 underline"
-                            onClick={() => setLocation('/terms')}
-                          >
-                            Terms of Service
-                            <ExternalLink className="w-3 h-3 ml-1" />
-                          </Button>
-                        </Label>
-                      </div>
+                          Terms of Service
+                          <ExternalLink className="w-3 h-3 ml-1" />
+                        </Button>
+                      </Label>
                     </div>
                   </>
                 )}
@@ -317,19 +352,20 @@ export default function Login() {
                 {/* Submit Button */}
                 <Button 
                   type="submit" 
-                  className="w-full bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600"
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                   disabled={loading}
                 >
-                  {loading ? (isLogin ? 'Signing In...' : 'Creating Account...') : (isLogin ? 'Sign In' : 'Create Account')}
+                  {loading ? (isLogin ? 'SIGNING IN...' : 'CREATING ACCOUNT...') : (isLogin ? 'LOGIN' : 'CREATE ACCOUNT')}
                 </Button>
               </form>
 
+              {/* Divider */}
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <Separator className="w-full bg-red-200 dark:bg-red-800" />
+                  <Separator className="w-full bg-gray-200 dark:bg-gray-700" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white dark:bg-gray-900 px-2 text-red-600 dark:text-red-400">
+                  <span className="bg-white dark:bg-gray-800 px-2 text-gray-500 dark:text-gray-400">
                     Or continue with
                   </span>
                 </div>
@@ -339,23 +375,26 @@ export default function Login() {
               <Button 
                 type="button"
                 variant="outline" 
-                className="w-full border-red-200 text-red-800 hover:bg-red-50 hover:text-red-900 dark:border-red-700 dark:text-red-200 dark:hover:bg-red-900/20 dark:hover:text-red-100"
+                className="w-full border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 h-12 font-medium"
                 onClick={handleGoogleSignIn}
                 disabled={loading}
               >
-                <Chrome className="w-4 h-4 mr-2" />
+                <Chrome className="w-5 h-5 mr-3" />
                 Sign in with Google
               </Button>
 
               {/* Toggle Login/Register */}
               <div className="text-center">
+                <span className="text-gray-600 dark:text-gray-400">
+                  {isLogin ? "Don't have an account? " : "Already have an account? "}
+                </span>
                 <Button
                   type="button"
                   variant="link"
-                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
+                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 p-0 h-auto font-semibold"
                   onClick={() => setIsLogin(!isLogin)}
                 >
-                  {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                  {isLogin ? "Sign up" : "Sign in"}
                 </Button>
               </div>
             </CardContent>
