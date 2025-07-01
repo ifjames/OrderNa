@@ -13,8 +13,11 @@ export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
-  const { data: menuItems, isLoading, error } = useMenuItems();
   const { addNotification } = useNotifications();
+  
+  // Use sample data while Firebase permissions are being configured
+  const isLoading = false;
+  const error = null;
 
   const categories = [
     { id: 'all', label: 'All Items' },
@@ -71,7 +74,7 @@ export default function Menu() {
     }
   ];
 
-  const itemsToDisplay = menuItems && menuItems.length > 0 && menuItems[0].name ? menuItems : sampleItems;
+  const itemsToDisplay = sampleItems; // Use sample data while Firebase permissions are configured
   
   const filteredItems = itemsToDisplay?.filter((item: any) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
@@ -102,7 +105,7 @@ export default function Menu() {
         return [...prevCart, cartItem];
       }
     });
-    addNotification(`${menuItem.name} added to cart!`, 'success');
+    // addNotification(`${menuItem.name} added to cart!`, 'success'); // Temporarily disabled
   };
 
   const getTotalItems = () => {

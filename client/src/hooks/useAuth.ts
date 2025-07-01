@@ -9,6 +9,7 @@ export interface AuthUser {
   name: string;
   role: 'student' | 'staff' | 'admin';
   studentId?: string;
+  phoneNumber?: string;
   createdAt: Date;
   updatedAt: Date;
 }

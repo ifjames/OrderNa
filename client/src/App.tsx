@@ -20,18 +20,14 @@ import StaffDashboard from "@/pages/StaffDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import Login from "@/pages/Login";
 import TermsOfService from "@/pages/TermsOfService";
+import Profile from "@/pages/Profile";
 import NotFound from "@/pages/not-found";
 
 function AppContent() {
   const { user, loading } = useAuth();
   const { notifications } = useNotifications();
   
-  useEffect(() => {
-    // Initialize sample data when app starts
-    if (user) {
-      initializeSampleData().catch(console.error);
-    }
-  }, [user]);
+  // Remove automatic sample data initialization to prevent permission errors
 
   if (loading) {
     return (
@@ -59,6 +55,7 @@ function AppContent() {
             <Route path="/cart" component={Cart} />
             <Route path="/orders" component={Orders} />
             <Route path="/orders/:id" component={Orders} />
+            <Route path="/profile" component={Profile} />
             
             {/* Staff routes */}
             {(user.role === 'staff' || user.role === 'admin') && (

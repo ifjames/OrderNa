@@ -15,17 +15,27 @@ import {
 } from '@/components/ui/sheet';
 import { Utensils, Menu, LogOut, User, ShoppingCart, History, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { logout as firebaseLogout } from '@/lib/firebase';
 
 export const Navigation = () => {
-  const [location] = useLocation();
-  const { user, logout } = useAuth();
+  const [location, setLocation] = useLocation();
+  const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await firebaseLogout();
+      setLocation('/'); // Redirect to landing page
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   const navigationItems = [
     { href: '/', label: 'Home', icon: Utensils },
     { href: '/menu', label: 'Menu', icon: Menu },
     { href: '/orders', label: 'Orders', icon: ShoppingCart },
-    { href: '/history', label: 'History', icon: History },
+    { href: '/orders', label: 'History', icon: History },
   ];
 
   const staffNavigationItems = [
@@ -100,10 +110,12 @@ export const Navigation = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem>
-                  <User className="w-4 h-4 mr-2" />
-                  Profile
+                  <Link href="/profile" className="flex items-center w-full">
+                    <User className="w-4 h-4 mr-2" />
+                    Profile
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
                 </DropdownMenuItem>

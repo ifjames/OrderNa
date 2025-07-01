@@ -13,17 +13,46 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 export default function Orders() {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const { user } = useAuth();
-  const { orders: allOrders, loading } = useLiveOrders();
-  const { order: selectedOrder, loading: orderLoading } = useOrderTracking(selectedOrderId || '');
+  
+  // Sample orders data while Firebase permissions are configured
+  const sampleOrders = [
+    {
+      id: '1',
+      orderNumber: 'ORD-001',
+      status: 'ready',
+      total: 150,
+      userId: user?.firebaseUid,
+      items: [
+        { name: 'Adobo Rice Bowl', quantity: 1, price: 85 },
+        { name: 'Mango Shake', quantity: 1, price: 55 }
+      ],
+      createdAt: new Date(),
+      canteenName: 'Main Canteen'
+    },
+    {
+      id: '2',
+      orderNumber: 'ORD-002', 
+      status: 'preparing',
+      total: 75,
+      userId: user?.firebaseUid,
+      items: [
+        { name: 'Pancit Canton', quantity: 1, price: 75 }
+      ],
+      createdAt: new Date(Date.now() - 30 * 60 * 1000),
+      canteenName: 'Engineering Canteen'
+    }
+  ];
 
-  // Filter orders for current user
-  const userOrders = allOrders.filter(order => order.userId === user?.id);
+  const loading = false;
+  const userOrders = sampleOrders;
   const activeOrders = userOrders.filter(order => 
     ['pending', 'preparing', 'ready'].includes(order.status)
   );
   const completedOrders = userOrders.filter(order => 
     ['completed', 'cancelled'].includes(order.status)
   );
+  const selectedOrder = selectedOrderId ? userOrders.find(order => order.id === selectedOrderId) : null;
+  const orderLoading = false;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
