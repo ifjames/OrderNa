@@ -5,16 +5,16 @@ import { Star, Plus } from 'lucide-react';
 import { MenuItem, CartItem } from '@shared/schema';
 
 interface MenuCardProps {
-  item: MenuItem;
+  item: any; // Flexible for Firestore data
   onAddToCart: (item: CartItem) => void;
 }
 
 export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
   const handleAddToCart = () => {
     onAddToCart({
-      id: item.id,
+      id: typeof item.id === 'string' ? parseInt(item.id) || Date.now() : item.id,
       name: item.name,
-      price: parseFloat(item.price),
+      price: typeof item.price === 'number' ? item.price : parseFloat(item.price?.toString() || '0'),
       quantity: 1,
       image: item.image || undefined,
     });
@@ -31,7 +31,7 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
           <Badge className="bg-primary/90 text-white border-none text-xs font-medium">
-            ₱{parseFloat(item.price).toFixed(0)}
+            ₱{(typeof item.price === 'number' ? item.price : parseFloat(item.price?.toString() || '0')).toFixed(0)}
           </Badge>
         </div>
       </div>
@@ -41,7 +41,7 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
             {item.name}
           </h3>
           <span className="text-primary font-bold text-xl opacity-100 group-hover:opacity-0 transition-opacity duration-300">
-            ₱{parseFloat(item.price).toFixed(0)}
+            ₱{(typeof item.price === 'number' ? item.price : parseFloat(item.price?.toString() || '0')).toFixed(0)}
           </span>
         </div>
         

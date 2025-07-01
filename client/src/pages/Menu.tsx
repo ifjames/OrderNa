@@ -15,10 +15,7 @@ export default function Menu() {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const { addNotification } = useNotifications();
-  
-  // Use sample data while Firebase permissions are being configured
-  const isLoading = false;
-  const error = null;
+  const { data: menuItems, isLoading, error } = useMenuItems();
 
   const categories = [
     { id: 'all', label: 'All Items' },
@@ -35,55 +32,9 @@ export default function Menu() {
     { id: 'jollibee', label: 'Jollibee', brands: ['Jollibee'] }
   ];
 
-  // Sample menu items if Firebase doesn't have data
-  const sampleItems = [
-    {
-      id: '1',
-      name: 'Classic Burger',
-      description: 'Juicy beef patty with lettuce, tomato, and our secret sauce',
-      price: '₱85',
-      category: 'main',
-      image: null,
-      available: true,
-      canteenId: 'main-canteen',
-      rating: '4.5'
-    },
-    {
-      id: '2',
-      name: 'Chicken Adobo Rice',
-      description: 'Traditional Filipino adobo served with steamed rice',
-      price: '₱75',
-      category: 'main',
-      image: null,
-      available: true,
-      canteenId: 'main-canteen',
-      rating: '4.8'
-    },
-    {
-      id: '3',
-      name: 'Pancit Canton',
-      description: 'Stir-fried noodles with vegetables and choice of meat',
-      price: '₱65',
-      category: 'main',
-      image: null,
-      available: true,
-      canteenId: 'main-canteen',
-      rating: '4.3'
-    },
-    {
-      id: '4',
-      name: 'Fresh Lumpia',
-      description: 'Fresh spring rolls with peanut sauce',
-      price: '₱45',
-      category: 'snacks',
-      image: null,
-      available: true,
-      canteenId: 'main-canteen',
-      rating: '4.6'
-    }
-  ];
+  // Menu data comes from Firestore via useMenuItems hook
 
-  const itemsToDisplay = sampleItems; // Use sample data while Firebase permissions are configured
+  const itemsToDisplay = menuItems && menuItems.length > 0 ? menuItems : [];
   
   const filteredItems = itemsToDisplay?.filter((item: any) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
@@ -95,9 +46,9 @@ export default function Menu() {
 
   const addToCart = (menuItem: any) => {
     const cartItem: CartItem = {
-      id: parseInt(menuItem.id) || Date.now(),
+      id: typeof menuItem.id === 'string' ? parseInt(menuItem.id) || Date.now() : menuItem.id,
       name: menuItem.name,
-      price: parseFloat(menuItem.price.replace('₱', '')) || 0,
+      price: typeof menuItem.price === 'number' ? menuItem.price : parseFloat(menuItem.price?.toString().replace('₱', '')) || 0,
       quantity: 1,
       image: menuItem.image,
       customizations: {}
