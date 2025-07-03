@@ -65,8 +65,8 @@ export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
   updatedAt: true,
 }).extend({
-  studentId: z.string().optional().default(''),
-  phoneNumber: z.string().optional().default(''),
+  studentId: z.string().default(''),
+  phoneNumber: z.string().default(''),
 });
 
 export const insertMenuItemSchema = createInsertSchema(menuItems).omit({
