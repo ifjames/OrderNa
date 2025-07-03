@@ -13,12 +13,12 @@ import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateD
 import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDSYNG7pAGLTFhYC6fSsrc3CFxmrf_0dME",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "ordernaub.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "ordernaub",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "ordernaub.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "348579273140",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:348579273140:web:63c1fc5f21789cb392fae1"
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -61,6 +61,7 @@ export const createUserWithEmailAndPassword = async (userData: {
     studentId: userData.studentId,
     phoneNumber: userData.phoneNumber,
     isActive: true,
+    loyaltyPoints: 0,
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   });
@@ -77,6 +78,7 @@ export const createUser = async (userData: any) => {
   const userRef = doc(db, 'users', userData.firebaseUid);
   await setDoc(userRef, {
     ...userData,
+    loyaltyPoints: 0,
     createdAt: Timestamp.now(),
   });
   return userData;
