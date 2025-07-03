@@ -170,6 +170,10 @@ Changelog:
 - July 03, 2025. Added functional notification bell with dropdown menu in navigation bar
 - July 03, 2025. Removed duplicate notification and profile icons from Home page header
 - July 03, 2025. Fixed login redirect to use root path for proper routing after authentication
+- July 03, 2025. Redesigned Menu page with proper stall selection flow - users must choose canteen first
+- July 03, 2025. Removed redundant canteens section near categories since stall selection handles this
+- July 03, 2025. Expanded menu items significantly: 40+ items across 4 canteens with authentic Filipino cuisine
+- July 03, 2025. Added availability display ("X available tomorrow") to menu items matching home page format
 ```
 
 ## User Preferences
