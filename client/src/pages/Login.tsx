@@ -37,7 +37,7 @@ export default function Login() {
       } else if (user.role === 'staff') {
         setLocation('/staff');
       } else {
-        setLocation('/home');
+        setLocation('/');
       }
     }
   }, [user, setLocation]);

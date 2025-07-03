@@ -64,17 +64,9 @@ export default function Home() {
       {/* Header Section */}
       <div className="bg-gradient-to-r from-red-600 to-red-700 text-white pt-20 pb-6 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold">Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name?.split(' ')[0]}!</h1>
-              <p className="text-red-100">What would you like to eat today?</p>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Bell className="w-6 h-6 cursor-pointer hover:text-red-200" />
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <User className="w-6 h-6" />
-              </div>
-            </div>
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold">Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name?.split(' ')[0]}!</h1>
+            <p className="text-red-100">What would you like to eat today?</p>
           </div>
           
           {/* Search Bar */}
