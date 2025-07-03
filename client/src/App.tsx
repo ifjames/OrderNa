@@ -58,14 +58,10 @@ function AppContent() {
             <Route path="/profile" component={Profile} />
             
             {/* Staff routes */}
-            {(user.role === 'staff' || user.role === 'admin') && (
-              <Route path="/staff" component={StaffDashboard} />
-            )}
+            <Route path="/staff" component={StaffDashboard} />
             
             {/* Admin routes */}
-            {user.role === 'admin' && (
-              <Route path="/admin" component={AdminDashboard} />
-            )}
+            <Route path="/admin" component={AdminDashboard} />
             
             {/* Fallback to 404 for authenticated users */}
             <Route component={NotFound} />

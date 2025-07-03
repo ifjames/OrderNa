@@ -13,7 +13,7 @@ import {
   SheetContent, 
   SheetTrigger 
 } from '@/components/ui/sheet';
-import { Utensils, Menu, LogOut, User, ShoppingCart, History, Settings } from 'lucide-react';
+import { Utensils, Menu, LogOut, User, ShoppingCart, History, Settings, Bell } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { logout as firebaseLogout } from '@/lib/firebase';
 import logoPath from "@assets/ChatGPT_Image_Jul_1__2025__10_17_44_PM-removebg_1751379765787.png";
@@ -98,6 +98,47 @@ export const Navigation = () => {
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
+            {/* Notification Bell */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative text-white hover:bg-white/10">
+                  <Bell className="w-5 h-5" />
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    3
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <div className="p-3 border-b">
+                  <h4 className="font-semibold">Notifications</h4>
+                </div>
+                <DropdownMenuItem className="flex flex-col items-start p-3">
+                  <div className="flex items-center w-full">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                    <span className="font-medium">Order #1234 Ready</span>
+                    <span className="text-xs text-gray-500 ml-auto">2m ago</span>
+                  </div>
+                  <span className="text-sm text-gray-600 mt-1">Your Chicken Adobo order is ready for pickup</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex flex-col items-start p-3">
+                  <div className="flex items-center w-full">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                    <span className="font-medium">New Menu Items</span>
+                    <span className="text-xs text-gray-500 ml-auto">1h ago</span>
+                  </div>
+                  <span className="text-sm text-gray-600 mt-1">Check out our new pasta dishes now available</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex flex-col items-start p-3">
+                  <div className="flex items-center w-full">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                    <span className="font-medium">Payment Confirmed</span>
+                    <span className="text-xs text-gray-500 ml-auto">3h ago</span>
+                  </div>
+                  <span className="text-sm text-gray-600 mt-1">Payment for order #1233 has been processed</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             {/* Cart Icon */}
             <Link href="/cart">
               <Button variant="ghost" size="sm" className="relative text-white hover:bg-white/10">
