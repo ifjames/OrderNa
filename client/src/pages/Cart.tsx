@@ -28,6 +28,9 @@ export default function Cart() {
   ]);
   const [pickupTime, setPickupTime] = useState('');
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [deliveryOption, setDeliveryOption] = useState('pickup'); // pickup or delivery
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   
   const { user } = useAuth();
   const { mutate: createOrder, isPending } = useCreateOrder();
@@ -48,6 +51,12 @@ export default function Cart() {
   };
 
   const getTotalPrice = () => {
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const deliveryFee = deliveryOption === 'delivery' ? 10 : 0;
+    return subtotal + deliveryFee;
+  };
+
+  const getSubtotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
@@ -61,23 +70,24 @@ export default function Cart() {
       pickupTime: pickupTime || 'ASAP',
       specialInstructions,
       canteenId: 'main-canteen',
+      paymentMethod: paymentMethod || 'cash',
+      deliveryOption,
+      deliveryAddress: deliveryOption === 'delivery' ? deliveryAddress : '',
+      deliveryFee: deliveryOption === 'delivery' ? 10 : 0,
     };
 
-    createOrder(
-      { orderData, cartItems: cart },
-      {
-        onSuccess: (order) => {
-          addNotification('Order placed successfully!', 'success');
-          setCart([]);
-          // Navigate to order tracking page
-          window.location.href = `/orders/${order.id}`;
-        },
-        onError: (error) => {
-          addNotification('Failed to place order. Please try again.', 'error');
-          console.error('Order error:', error);
-        },
-      }
-    );
+    createOrder({ orderData, cartItems: cart }, {
+      onSuccess: (order) => {
+        addNotification({ message: 'Order placed successfully!', type: 'success' });
+        setCart([]);
+        // Navigate to order tracking page
+        window.location.href = `/orders/${order.id}`;
+      },
+      onError: (error) => {
+        addNotification({ message: 'Failed to place order. Please try again.', type: 'error' });
+        console.error('Order error:', error);
+      },
+    });
   };
 
   if (cart.length === 0) {
@@ -188,18 +198,66 @@ export default function Cart() {
                 <CardTitle>Checkout</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Delivery Option */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Pickup Time
+                    Delivery Option
+                  </label>
+                  <Select value={deliveryOption} onValueChange={setDeliveryOption}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select delivery option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pickup">Pickup (Free)</SelectItem>
+                      <SelectItem value="delivery">Student Delivery (+₱10)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Delivery Address (only if delivery is selected) */}
+                {deliveryOption === 'delivery' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Delivery Address
+                    </label>
+                    <Textarea
+                      placeholder="Enter your delivery address (Building, Room, etc.)"
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      rows={2}
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {deliveryOption === 'pickup' ? 'Pickup Time' : 'Delivery Time'}
                   </label>
                   <Select value={pickupTime} onValueChange={setPickupTime}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select pickup time" />
+                      <SelectValue placeholder={`Select ${deliveryOption} time`} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="now">Now (5-10 mins)</SelectItem>
                       <SelectItem value="break">Next Break (30 mins)</SelectItem>
                       <SelectItem value="lunch">Lunch Time (2 hours)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Payment Method */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Payment Method
+                  </label>
+                  <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select payment method" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cash">Cash on {deliveryOption === 'pickup' ? 'Pickup' : 'Delivery'}</SelectItem>
+                      <SelectItem value="gcash">GCash</SelectItem>
+                      <SelectItem value="maya">Maya (PayMaya)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -217,9 +275,21 @@ export default function Cart() {
                 </div>
 
                 <div className="border-t pt-4">
-                  <div className="flex justify-between text-lg font-semibold mb-4">
-                    <span>Total:</span>
-                    <span className="text-primary">₱{getTotalPrice()}</span>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-sm">
+                      <span>Subtotal:</span>
+                      <span>₱{getSubtotal()}</span>
+                    </div>
+                    {deliveryOption === 'delivery' && (
+                      <div className="flex justify-between text-sm">
+                        <span>Delivery Fee:</span>
+                        <span>₱10</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-lg font-semibold border-t pt-2">
+                      <span>Total:</span>
+                      <span className="text-primary">₱{getTotalPrice()}</span>
+                    </div>
                   </div>
                   
                   <Button 

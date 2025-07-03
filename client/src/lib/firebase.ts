@@ -108,7 +108,8 @@ export const getMenuItems = async () => {
         available: true,
         canteenId: 'main-canteen',
         rating: '4.8',
-        createdAt: new Date()
+        createdAt: new Date(),
+        stock: 25
       },
       {
         id: '2',
@@ -120,7 +121,8 @@ export const getMenuItems = async () => {
         available: true,
         canteenId: 'main-canteen',
         rating: '4.6',
-        createdAt: new Date()
+        createdAt: new Date(),
+        stock: 18
       },
       {
         id: '3',
@@ -129,10 +131,11 @@ export const getMenuItems = async () => {
         price: 45,
         category: 'snacks',
         image: 'https://images.unsplash.com/photo-1563379091339-03246963d22a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
-        available: true,
+        available: false,
         canteenId: 'main-canteen',
         rating: '4.7',
-        createdAt: new Date()
+        createdAt: new Date(),
+        stock: 0
       },
       {
         id: '4',
@@ -144,7 +147,8 @@ export const getMenuItems = async () => {
         available: true,
         canteenId: 'main-canteen',
         rating: '4.9',
-        createdAt: new Date()
+        createdAt: new Date(),
+        stock: 12
       }
     ];
   }

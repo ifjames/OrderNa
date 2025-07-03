@@ -159,34 +159,71 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {popularItems.map((item) => (
-                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-red-600 font-bold">₱{item.price}</span>
-                      <div className="flex items-center text-yellow-500">
-                        <Star className="w-4 h-4 fill-current" />
-                        <span className="ml-1 text-sm text-gray-600">{item.rating}</span>
-                      </div>
+              {popularItems.map((item, index) => {
+                const stock = [25, 18, 0, 12][index]; // Stock for tomorrow
+                const isAvailable = stock > 0;
+                
+                return (
+                  <Card 
+                    key={item.id} 
+                    className="group overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-500 cursor-pointer hover:border-red-300 dark:hover:border-red-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+                    onClick={() => window.location.href = '/menu'}
+                  >
+                    <div className="aspect-video overflow-hidden relative">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {!isAvailable && (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                          <Badge variant="destructive" className="text-sm font-semibold">No More Available</Badge>
+                        </div>
+                      )}
+                      
+                      {isAvailable && stock <= 5 && (
+                        <div className="absolute top-2 right-2">
+                          <Badge variant="secondary" className="bg-orange-500 text-white text-xs">
+                            Only {stock} left
+                          </Badge>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <Badge variant="secondary" className="text-xs">{item.category}</Badge>
-                      <div className="flex items-center">
-                        <Clock className="w-3 h-3 mr-1" />
-                        {item.prepTime}
+                    
+                    <CardContent className="p-4 group-hover:bg-red-50/50 dark:group-hover:bg-red-950/20 transition-colors duration-300">
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors duration-300">
+                        {item.name}
+                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-red-600 dark:text-red-400 font-bold text-lg group-hover:scale-110 transition-transform duration-300">
+                          ₱{item.price}
+                        </span>
+                        <div className="flex items-center text-yellow-500">
+                          <Star className="w-4 h-4 fill-current" />
+                          <span className="ml-1 text-sm text-gray-600 dark:text-gray-400">{item.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <Badge variant="secondary" className="text-xs group-hover:bg-red-100 dark:group-hover:bg-red-900/30 transition-colors duration-300">
+                          {item.category}
+                        </Badge>
+                        <div className="flex items-center">
+                          <Clock className="w-3 h-3 mr-1" />
+                          {item.prepTime}
+                        </div>
+                      </div>
+                      
+                      {isAvailable && (
+                        <div className="mt-2 text-xs text-green-600 dark:text-green-400 font-medium">
+                          {stock} available tomorrow
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </CardContent>
         </Card>

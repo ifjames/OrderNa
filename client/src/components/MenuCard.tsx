@@ -34,6 +34,22 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
             ₱{(typeof item.price === 'number' ? item.price : parseFloat(item.price?.toString() || '0')).toFixed(0)}
           </Badge>
         </div>
+        
+        {/* Stock Status Overlay */}
+        {!item.available || item.stock === 0 && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <Badge variant="destructive" className="text-sm font-semibold">No More Available</Badge>
+          </div>
+        )}
+        
+        {/* Low Stock Warning */}
+        {item.available && item.stock > 0 && item.stock <= 5 && (
+          <div className="absolute top-3 left-3">
+            <Badge variant="secondary" className="bg-orange-500 text-white text-xs">
+              Only {item.stock} left
+            </Badge>
+          </div>
+        )}
       </div>
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-3">

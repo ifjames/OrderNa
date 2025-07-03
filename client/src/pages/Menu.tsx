@@ -127,49 +127,53 @@ export default function Menu() {
             </div>
           </div>
 
-          {/* Category Filters */}
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Categories</h3>
-            <div className="flex flex-wrap gap-2 animate-slide-in-right animate-delay-500">
-              {categories.map((category, index) => (
-                <Button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  variant={selectedCategory === category.id ? 'default' : 'outline'}
-                  size="sm"
-                  className={`
-                    hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
-                    ${selectedCategory === category.id
-                      ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
-                      : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
-                  }`}
-                >
-                  {category.label}
-                </Button>
-              ))}
-            </div>
-          </div>
+          {/* Smart Filters - Categories, Canteens & Brands in One Line */}
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-3 items-center animate-slide-in-right animate-delay-500">
+              {/* Categories Section */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Categories:</span>
+                {categories.map((category) => (
+                  <Button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    variant={selectedCategory === category.id ? 'default' : 'outline'}
+                    size="sm"
+                    className={`
+                      hover-scale transition-all duration-300
+                      ${selectedCategory === category.id
+                        ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
+                        : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
+                    }`}
+                  >
+                    {category.label}
+                  </Button>
+                ))}
+              </div>
 
-          {/* Canteen/Market Filters */}
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Canteens & Brands</h3>
-            <div className="flex flex-wrap gap-2 animate-slide-in-right animate-delay-600">
-              {canteens.map((canteen, index) => (
-                <Button
-                  key={canteen.id}
-                  onClick={() => setSelectedCanteen(canteen.id)}
-                  variant={selectedCanteen === canteen.id ? 'default' : 'outline'}
-                  size="sm"
-                  className={`
-                    hover-scale transition-all duration-300 animate-fade-in animate-delay-${(index + 1) * 100}
-                    ${selectedCanteen === canteen.id
-                      ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
-                      : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
-                  }`}
-                >
-                  {canteen.label}
-                </Button>
-              ))}
+              {/* Separator */}
+              <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-2"></div>
+
+              {/* Canteens Section */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Canteens:</span>
+                {canteens.map((canteen) => (
+                  <Button
+                    key={canteen.id}
+                    onClick={() => setSelectedCanteen(canteen.id)}
+                    variant={selectedCanteen === canteen.id ? 'default' : 'outline'}
+                    size="sm"
+                    className={`
+                      hover-scale transition-all duration-300
+                      ${selectedCanteen === canteen.id
+                        ? 'bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 hover-glow'
+                        : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
+                    }`}
+                  >
+                    {canteen.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
