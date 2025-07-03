@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'wouter';
-import { ShoppingCart, Clock, Star, ArrowRight, MapPin, Utensils, Receipt, Bell, User, Search } from 'lucide-react';
+import { ShoppingCart, Clock, Star, ArrowRight, MapPin, Utensils, Receipt, Search, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserOrders } from '@/hooks/useOrders';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';

@@ -47,7 +47,9 @@ function AppContent() {
           <Navigation />
           <Switch>
             {/* Root redirect based on role */}
-            <Route path="/" component={user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home} />
+            <Route path="/">
+              {user.role === 'admin' ? <AdminDashboard /> : user.role === 'staff' ? <StaffDashboard /> : <Home />}
+            </Route>
             
             {/* Common authenticated routes */}
             <Route path="/home" component={Home} />
