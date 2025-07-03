@@ -179,17 +179,17 @@ export default function Login() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
           <div className="text-center mb-8 animate-slide-up animate-delay-300">
-            <img src={logoPath} alt="OrderNa Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-lg animate-scale-in animate-delay-200" />
-            <h1 className="text-4xl font-bold mb-4 animate-fade-in animate-delay-400">Welcome to OrderNa</h1>
+            <img src={logoPath} alt="UB FoodHub Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-lg animate-scale-in animate-delay-200" />
+            <h1 className="text-4xl font-bold mb-4 animate-fade-in animate-delay-400">Welcome to UB FoodHub</h1>
             <p className="text-xl text-red-100 leading-relaxed max-w-md animate-fade-in animate-delay-500">
-              University of Batangas Food Ordering System
+              University of Batangas Food Ordering & Delivery System
             </p>
           </div>
           
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center max-w-sm hover-lift animate-scale-in animate-delay-500">
             <h3 className="text-lg font-semibold mb-2">Pre-order your meals</h3>
             <p className="text-red-100 text-sm">
-              Skip the lines and enjoy fresh campus meals with our convenient ordering system
+              Skip the lines and enjoy fresh campus meals with our convenient ordering and delivery system
             </p>
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function Login() {
             <CardHeader className="text-center space-y-4 pb-6">
               {/* Mobile Logo */}
               <div className="lg:hidden flex justify-center animate-scale-in animate-delay-100">
-                <img src={logoPath} alt="OrderNa Logo" className="w-16 h-16" />
+                <img src={logoPath} alt="UB FoodHub Logo" className="w-16 h-16" />
               </div>
               
               <CardTitle className="text-2xl font-bold text-red-800 dark:text-red-200 animate-fade-in animate-delay-400">

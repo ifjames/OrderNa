@@ -24,7 +24,7 @@ export default function TermsOfService() {
               Terms of Service
             </CardTitle>
             <p className="text-red-600 dark:text-red-400 mt-2">
-              OrderNa - University of Batangas Food Ordering System
+              UB FoodHub - University of Batangas Food Ordering & Delivery System
             </p>
           </CardHeader>
           <CardContent className="space-y-6 text-gray-700 dark:text-gray-300">
@@ -33,7 +33,7 @@ export default function TermsOfService() {
                 1. Acceptance of Terms
               </h2>
               <p>
-                By using OrderNa, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
+                By using UB FoodHub, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
               </p>
             </section>
 
@@ -42,7 +42,7 @@ export default function TermsOfService() {
                 2. Service Description
               </h2>
               <p>
-                OrderNa is a food ordering platform specifically designed for University of Batangas canteens. The service allows students and staff to pre-order food items and pick them up using QR codes.
+                UB FoodHub is a food ordering and delivery platform specifically designed for University of Batangas canteens. The service allows students and staff to pre-order food items, schedule pickup times, and request campus delivery using QR codes.
               </p>
             </section>
 
@@ -67,53 +67,79 @@ export default function TermsOfService() {
                 <li>Orders are subject to availability and canteen operating hours</li>
                 <li>Cancellation policies vary by canteen and timing</li>
                 <li>No-show orders may result in account restrictions</li>
+                <li>Delivery fees apply for campus delivery orders</li>
               </ul>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
-                5. QR Code Usage
+                5. Delivery Service
+              </h2>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Campus delivery is available to designated locations within University of Batangas</li>
+                <li>Delivery times are estimates and may vary based on demand and weather conditions</li>
+                <li>You must be available at the specified delivery location during the estimated delivery window</li>
+                <li>Additional delivery fees may apply for certain locations or peak hours</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
+                6. QR Code Usage
               </h2>
               <ul className="list-disc list-inside space-y-2">
                 <li>QR codes are unique to each order and should not be shared</li>
-                <li>Present your QR code at the designated pickup location</li>
+                <li>Present your QR code at the designated pickup location or to delivery personnel</li>
                 <li>QR codes expire according to the specified pickup time</li>
               </ul>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
-                6. Privacy and Data Protection
-              </h2>
-              <p>
-                We collect and process your personal information in accordance with our Privacy Policy. This includes your name, student ID, email, phone number, and order history for the purpose of providing our services.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-xl font-semibent text-red-800 dark:text-red-200 mb-3">
-                7. Prohibited Conduct
+                7. Loyalty Program and Reviews
               </h2>
               <ul className="list-disc list-inside space-y-2">
-                <li>Do not share your account credentials with others</li>
-                <li>Do not attempt to manipulate or abuse the ordering system</li>
-                <li>Do not place fraudulent orders</li>
-                <li>Respect canteen staff and other users</li>
+                <li>Loyalty points are earned with qualifying purchases and have no cash value</li>
+                <li>Points may expire if account is inactive for extended periods</li>
+                <li>Reviews and ratings must be honest and based on actual experiences</li>
+                <li>Inappropriate or false reviews may result in account suspension</li>
               </ul>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
-                8. Limitation of Liability
+                8. Privacy and Data Protection
               </h2>
               <p>
-                OrderNa is not responsible for food quality issues, allergic reactions, or delays caused by canteen operations. Users are responsible for communicating dietary restrictions and preferences.
+                We collect and process your personal information in accordance with our Privacy Policy. This includes your name, student ID, email, phone number, delivery address, and order history for the purpose of providing our services.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
-                9. Changes to Terms
+                9. Prohibited Conduct
+              </h2>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Do not share your account credentials with others</li>
+                <li>Do not attempt to manipulate or abuse the ordering system</li>
+                <li>Do not place fraudulent orders</li>
+                <li>Respect canteen staff, delivery personnel, and other users</li>
+                <li>Do not abuse the loyalty program or review system</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
+                10. Limitation of Liability
+              </h2>
+              <p>
+                UB FoodHub is not responsible for food quality issues, allergic reactions, delays caused by canteen operations, or delivery delays due to weather or other circumstances beyond our control. Users are responsible for communicating dietary restrictions and preferences.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
+                11. Changes to Terms
               </h2>
               <p>
                 We reserve the right to modify these terms at any time. Users will be notified of significant changes through the platform.
@@ -122,10 +148,10 @@ export default function TermsOfService() {
 
             <section>
               <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-3">
-                10. Contact Information
+                12. Contact Information
               </h2>
               <p>
-                For questions about these Terms of Service, please contact the University of Batangas IT Department or the OrderNa support team.
+                For questions about these Terms of Service, please contact the University of Batangas IT Department or the UB FoodHub support team.
               </p>
             </section>
 

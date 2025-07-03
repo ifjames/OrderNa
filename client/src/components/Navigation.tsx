@@ -86,9 +86,9 @@ export const Navigation = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-maroon-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 overflow-hidden">
-              <img src={logoPath} alt="OrderNa Logo" className="w-8 h-8 object-contain" />
+              <img src={logoPath} alt="UB FoodHub Logo" className="w-8 h-8 object-contain" />
             </div>
-            <h1 className="text-xl font-poppins font-bold text-white text-shadow group-hover:text-red-100 transition-colors duration-300">OrderNa</h1>
+            <h1 className="text-xl font-poppins font-bold text-white text-shadow group-hover:text-red-100 transition-colors duration-300">UB FoodHub</h1>
           </Link>
           
           {/* Desktop Navigation */}
