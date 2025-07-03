@@ -41,11 +41,11 @@ function AppContent() {
     <>
       <NotificationContainer notifications={notifications} />
       
-      <Switch>
-        {user ? (
-          // Authenticated user routes
-          <>
-            <Navigation />
+      {user ? (
+        // Authenticated user routes
+        <>
+          <Navigation />
+          <Switch>
             {/* Root redirect based on role */}
             <Route path="/" component={user.role === 'admin' ? AdminDashboard : user.role === 'staff' ? StaffDashboard : Home} />
             
@@ -69,19 +69,19 @@ function AppContent() {
             
             {/* Fallback to 404 for authenticated users */}
             <Route component={NotFound} />
-          </>
-        ) : (
-          // Public routes for non-authenticated users
-          <>
-            <Route path="/" component={Landing} />
-            <Route path="/login" component={Login} />
-            <Route path="/terms" component={TermsOfService} />
-            
-            {/* Fallback to 404 for public users */}
-            <Route component={NotFound} />
-          </>
-        )}
-      </Switch>
+          </Switch>
+        </>
+      ) : (
+        // Public routes for non-authenticated users
+        <Switch>
+          <Route path="/" component={Landing} />
+          <Route path="/login" component={Login} />
+          <Route path="/terms" component={TermsOfService} />
+          
+          {/* Fallback to 404 for public users */}
+          <Route component={NotFound} />
+        </Switch>
+      )}
     </>
   );
 }
