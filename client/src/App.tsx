@@ -51,6 +51,11 @@ function AppContent() {
               {user.role === 'admin' ? <AdminDashboard /> : user.role === 'staff' ? <StaffDashboard /> : <Home />}
             </Route>
             
+            {/* Redirect public routes to home for authenticated users */}
+            <Route path="/login">
+              {user.role === 'admin' ? <AdminDashboard /> : user.role === 'staff' ? <StaffDashboard /> : <Home />}
+            </Route>
+            
             {/* Common authenticated routes */}
             <Route path="/home" component={Home} />
             <Route path="/menu" component={Menu} />

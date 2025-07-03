@@ -31,19 +31,29 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      // Redirect based on role
-      if (user.role === 'admin') {
-        setLocation('/admin');
-      } else if (user.role === 'staff') {
-        setLocation('/staff');
-      } else {
-        setLocation('/');
-      }
+      // Use setTimeout to ensure the redirect happens after the current render cycle
+      setTimeout(() => {
+        // Redirect based on role
+        if (user.role === 'admin') {
+          setLocation('/admin');
+        } else if (user.role === 'staff') {
+          setLocation('/staff');
+        } else {
+          setLocation('/');
+        }
+      }, 100);
     }
   }, [user, setLocation]);
 
   if (user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="loading-pulse w-8 h-8 bg-red-600 rounded-full mx-auto mb-4"></div>
+          <p>Redirecting...</p>
+        </div>
+      </div>
+    );
   }
 
   const handleGoogleSignIn = async () => {
