@@ -65,6 +65,13 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
           {item.description}
         </p>
         
+        {/* Availability Info */}
+        {item.available && item.stock > 0 && (
+          <div className="mb-3 text-xs text-green-600 font-medium">
+            {item.stock} available tomorrow
+          </div>
+        )}
+        
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="flex items-center text-yellow-500 bg-yellow-50 px-2 py-1 rounded-full">
@@ -82,6 +89,7 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
             onClick={handleAddToCart}
             size="sm"
             className="btn-modern text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
+            disabled={!item.available || item.stock === 0}
           >
             <Plus className="w-4 h-4 mr-1" />
             Add

@@ -11,7 +11,7 @@ import { useNotifications } from '@/components/ui/notification';
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedCanteen, setSelectedCanteen] = useState('all');
+  const [selectedCanteen, setSelectedCanteen] = useState(''); // Empty = no stall selected
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const { addNotification } = useNotifications();
@@ -25,24 +25,48 @@ export default function Menu() {
   ];
 
   const canteens = [
-    { id: 'all', label: 'All Canteens' },
-    { id: 'main-canteen', label: 'Main Canteen', brands: ['Local Kitchen'] },
-    { id: 'chowking', label: 'Chowking', brands: ['Chowking'] },
-    { id: 'kfc', label: 'KFC', brands: ['KFC'] },
-    { id: 'jollibee', label: 'Jollibee', brands: ['Jollibee'] }
+    { 
+      id: 'main-canteen', 
+      label: 'Main Canteen', 
+      description: 'Traditional Filipino dishes & local favorites',
+      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+      brands: ['Local Kitchen'] 
+    },
+    { 
+      id: 'chowking', 
+      label: 'Chowking', 
+      description: 'Chinese-Filipino fast food chain',
+      image: 'https://images.unsplash.com/photo-1563379091339-03246963d22a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+      brands: ['Chowking'] 
+    },
+    { 
+      id: 'kfc', 
+      label: 'KFC', 
+      description: 'Finger lickin\' good fried chicken',
+      image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+      brands: ['KFC'] 
+    },
+    { 
+      id: 'jollibee', 
+      label: 'Jollibee', 
+      description: 'The home of the langhap-sarap Yumburger',
+      image: 'https://images.unsplash.com/photo-1546173159-315724a31696?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+      brands: ['Jollibee'] 
+    }
   ];
 
   // Menu data comes from Firestore via useMenuItems hook
 
   const itemsToDisplay = menuItems && menuItems.length > 0 ? menuItems : [];
   
-  const filteredItems = itemsToDisplay?.filter((item: any) => {
+  // Only show items if a canteen is selected
+  const filteredItems = selectedCanteen && itemsToDisplay ? itemsToDisplay.filter((item: any) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesCanteen = selectedCanteen === 'all' || item.canteenId === selectedCanteen;
+    const matchesCanteen = item.canteenId === selectedCanteen;
     const matchesSearch = item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          item.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesCanteen && matchesSearch;
-  }) || [];
+  }) : [];
 
   const addToCart = (menuItem: any) => {
     const cartItem: CartItem = {
@@ -97,17 +121,76 @@ export default function Menu() {
     );
   }
 
+  // Show stall selection if no stall is selected
+  if (!selectedCanteen) {
+    return (
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-red-50 via-white to-red-50 animate-fade-in">
+        {/* Header */}
+        <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 text-white py-12 px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              Choose Your Stall
+            </h1>
+            <p className="text-xl text-red-100">
+              Select a canteen to view their menu
+            </p>
+          </div>
+        </section>
+
+        {/* Stall Selection Grid */}
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {canteens.map((canteen) => (
+              <div
+                key={canteen.id}
+                onClick={() => setSelectedCanteen(canteen.id)}
+                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden"
+              >
+                <div className="h-48 bg-gradient-to-br from-red-400 to-red-600 relative">
+                  <img 
+                    src={canteen.image} 
+                    alt={canteen.label}
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-xl font-bold">{canteen.label}</h3>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 mb-4">{canteen.description}</p>
+                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                    View Menu
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950 dark:via-gray-900 dark:to-red-950 animate-fade-in">
-      {/* Header */}
-      <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 dark:from-red-900 dark:via-red-800 dark:to-red-900 text-white py-12 px-4 animate-slide-down">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-slide-up animate-delay-200">
-            University of Batangas Menu
-          </h1>
-          <p className="text-xl text-red-100 dark:text-red-200 animate-fade-in animate-delay-400">
-            Fresh meals from our campus canteens
-          </p>
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-red-50 via-white to-red-50 animate-fade-in">
+      {/* Header with Back Button */}
+      <section className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 text-white py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          <Button 
+            variant="ghost" 
+            onClick={() => setSelectedCanteen('')}
+            className="text-white hover:bg-white/10 mb-4"
+          >
+            ← Back to Stalls
+          </Button>
+          <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              {canteens.find(c => c.id === selectedCanteen)?.label} Menu
+            </h1>
+            <p className="text-xl text-red-100">
+              Fresh meals available now
+            </p>
+          </div>
         </div>
       </section>
 
